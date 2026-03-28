@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // Admin password (change in .env if desired)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
@@ -76,6 +76,23 @@ app.post('/api/portfolio', requireAuth, (req, res) => {
   }
 });
 
+// Serve frontend static files from the dist directory (Vite build output)
+const distPath = path.join(__dirname, 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+
+  // Catch-all route to return index.html for all non-API routes (React Router fallback)
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+} else {
+  console.warn("Warning: 'dist' folder not found. Frontend will not be served.");
+  // Still provide a fallback for root just in case
+  app.get('/', (req, res) => {
+    res.send("Backend API is running. Build the frontend to serve the UI.");
+  });
+}
+
 app.listen(port, () => {
-  console.log(`JSON CMS API attached! Admin running on port ${port}`);
+  console.log(`JSON CMS API attached! Server running on port ${port}`);
 });
