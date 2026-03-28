@@ -1,0 +1,92 @@
+{
+  "categories": [
+    {
+      "id": "character-sheets",
+      "slug": "character-sheets",
+      "name": "Character & Reference Sheets",
+      "coverImage": "https://res.cloudinary.com/dib3jrmql/image/upload/v1774692991/d8qikeo9ndn0d0zpv2bu.png",
+      "desc": "High-quality, detailed reference sheets featuring multiple views, expressions, and color palettes to perfectly define your original characters.",
+      "artworks": [
+        {
+          "id": "xdfeursidik9hnozesqp",
+          "url": "https://res.cloudinary.com/dib3jrmql/image/upload/v1774693050/xdfeursidik9hnozesqp.png"
+        }
+      ]
+    },
+    {
+      "id": "posters-covers",
+      "slug": "posters-covers",
+      "name": "Posters & Cover Art",
+      "coverImage": "",
+      "desc": "Cinematic, full-scale illustrations designed for maximum visual impact. Ideal for commercial projects, social media, or personal collections.",
+      "artworks": []
+    },
+    {
+      "id": "vtuber-models",
+      "slug": "vtuber-models",
+      "name": "VTuber Models",
+      "coverImage": "",
+      "desc": "Professional-grade Live2D models with clean layering and precise cuts. Every file is optimized for fluid movement and high-fidelity rigging.",
+      "artworks": []
+    },
+    {
+      "id": "banners",
+      "slug": "banners",
+      "name": "Banners",
+      "coverImage": "",
+      "desc": "Custom-tailored banners for all major platforms including Twitter, Twitch, and YouTube. Optimized for all devices.",
+      "artworks": []
+    },
+    {
+      "id": "emotes",
+      "slug": "emotes",
+      "name": "Emotes",
+      "coverImage": "",
+      "desc": "Expressive, readable, and full of personality. Custom emotes designed to engage your community and enhance your brand.",
+      "artworks": []
+    },
+    {
+      "id": "overlays",
+      "slug": "overlays",
+      "name": "Streaming Overlays",
+      "coverImage": "",
+      "desc": "Clean, modern, and immersive overlays that bring your stream to life. Includes alerts, scenes, and UI elements.",
+      "artworks": []
+    }
+  ],
+  "about": {
+    "title": "Warry's Story",
+    "quote": "Bringing warmth and magic to every character I touch.",
+    "description": "I'm a self-taught digital illustrator with a deep passion for creating **warm, cozy, and dreamy artwork.** My style is heavily inspired by anime aesthetics, soft cinematic lighting, and the organic nature of playful characters.",
+    "points": [
+      "3+ Years of Digital Painting",
+      "Anime & Character Specialist",
+      "Global Commission Experience"
+    ],
+    "stats": [
+      {
+        "value": "3+ Years",
+        "label": "Experience"
+      },
+      {
+        "value": "100+",
+        "label": "Projects"
+      }
+    ],
+    "images": [
+      "https://picsum.photos/seed/art7/500/700",
+      "https://picsum.photos/seed/art8/500/500",
+      "https://picsum.photos/seed/art9/500/500",
+      "https://picsum.photos/seed/art10/500/700"
+    ]
+  },
+  "contact": {
+    "email": "drivenkore@gmail.com",
+    "discord": "WayArt#1234",
+    "socials": {
+      "twitter": "#",
+      "instagram": "#",
+      "github": "#"
+    }
+  }
+}
