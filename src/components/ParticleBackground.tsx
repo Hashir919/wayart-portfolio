@@ -19,14 +19,17 @@ export default function ParticleBackground() {
   }, []);
 
   const particles = useMemo(() => {
-    return Array.from({ length: 40 }).map((_, i) => ({
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const particleCount = isMobile ? 15 : 40;
+
+    return Array.from({ length: particleCount }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      duration: Math.random() * 20 + 15,
+      size: Math.random() * (isMobile ? 2 : 3) + 1,
+      duration: Math.random() * 20 + 20,
       delay: Math.random() * 10,
-      opacity: Math.random() * 0.3 + 0.1,
+      opacity: Math.random() * 0.2 + 0.05,
     }));
   }, []);
 
@@ -42,22 +45,22 @@ export default function ParticleBackground() {
           key={p.id}
           initial={{
             opacity: 0,
-            x: `${p.x}vw`,
-            y: `${p.y}vh`,
+            left: `${p.x}%`,
+            top: `${p.y}%`,
           }}
           animate={{
             opacity: [0, p.opacity, 0],
-            y: [`${p.y}vh`, `${p.y - 30}vh`],
-            x: [`${p.x}vw`, `${p.x + (Math.random() * 15 - 7.5)}vw`],
-            scale: [1, 1.5, 1],
+            y: [0, -200],
+            x: [0, (Math.random() * 40 - 20)],
+            scale: [1, 1.2, 1],
           }}
           transition={{
             duration: p.duration,
             repeat: Infinity,
             delay: p.delay,
-            ease: "easeInOut",
+            ease: "linear",
           }}
-          className="absolute rounded-full bg-primary/20 blur-[2px]"
+          className="absolute rounded-full bg-primary/20 blur-[1px] md:blur-[2px] will-change-transform"
           style={{
             width: p.size,
             height: p.size,
@@ -66,7 +69,7 @@ export default function ParticleBackground() {
       ))}
 
       {/* Subtle Grid Overlay */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] md:opacity-[0.03] mix-blend-overlay" />
     </div>
   );
 }
