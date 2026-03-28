@@ -172,23 +172,38 @@ export default function AdminPage() {
 
   // --- Cloudinary Upload Logic ---
   const uploadToCloudinary = async (file: File) => {
+    console.log(`[Cloudinary] Starting upload for: ${file.name}`);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
 
-    const res = await fetch(CLOUDINARY_URL, {
-      method: "POST",
-      body: formData
-    });
+    try {
+      const res = await fetch(CLOUDINARY_URL, {
+        method: "POST",
+        body: formData
+      });
 
-    if (!res.ok) {
-      throw new Error("Cloudinary upload failed");
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("[Cloudinary] Upload failed details:", errorData);
+        throw new Error("Cloudinary upload failed");
+      }
+
+      const json = await res.json();
+      console.log("[Cloudinary] Upload success:", {
+        public_id: json.public_id,
+        secure_url: json.secure_url,
+        format: json.format
+      });
+
+      return {
+        id: json.public_id,
+        url: json.secure_url
+      };
+    } catch (err) {
+      console.error("[Cloudinary] System error during upload:", err);
+      throw err;
     }
-    const json = await res.json();
-    return {
-      id: json.public_id,
-      url: json.secure_url
-    };
   };
 
   const handleArtworkUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,6 +211,8 @@ export default function AdminPage() {
     
     setUploading(true);
     setError("");
+    
+    console.log(`[CMS Admin] Uploading artworks to category ID: ${activeCategoryId}`);
     
     try {
       const files = Array.from(e.target.files) as File[];
@@ -206,12 +223,17 @@ export default function AdminPage() {
       const newData = { ...data };
       const category = newData.categories.find(c => c.id === activeCategoryId);
       if (category) {
+        console.log(`[CMS Admin] Attaching ${uploadedArtworks.length} new artworks to category ${category.name}`);
         category.artworks = [...category.artworks, ...uploadedArtworks];
+        
+        // Update state and PERSIST to server
         setData(newData);
         await saveData(newData);
+      } else {
+        console.error(`[CMS Admin] Critical Error: Category ID ${activeCategoryId} not found in state.`);
       }
-    } catch (err) {
-      setError("Failed to upload artwork to Cloudinary");
+    } catch (err: any) {
+      setError(err.message || "Failed to upload artwork to Cloudinary");
     } finally {
       setUploading(false);
       if (artworkInputRef.current) artworkInputRef.current.value = "";
@@ -221,6 +243,10 @@ export default function AdminPage() {
   const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>, catId: string) => {
     if (!e.target.files || e.target.files.length === 0 || !data) return;
     setUploading(true);
+    setError("");
+    
+    console.log(`[CMS Admin] Replacing cover for category: ${catId}`);
+    
     try {
       const result = await uploadToCloudinary(e.target.files[0]);
       const newData = { ...data };
@@ -241,6 +267,10 @@ export default function AdminPage() {
   const handleAboutImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0 || !data || uploadingAboutIndex === null) return;
     setUploading(true);
+    setError("");
+    
+    console.log(`[CMS Admin] Uploading story image at index: ${uploadingAboutIndex}`);
+    
     try {
       const result = await uploadToCloudinary(e.target.files[0]);
       const newData = { ...data };
@@ -271,15 +301,29 @@ export default function AdminPage() {
 
   const saveEditedCategory = () => {
     if (!editingCategory || !data) return;
+    
+    // Normalize slug: lowercase and hyphen-based
+    const normalizedSlug = editingCategory.slug
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+      
+    const categoryToSave = { 
+      ...editingCategory, 
+      slug: normalizedSlug || editingCategory.id.replace('cat-', 'category-')
+    };
+
     const newData = { ...data };
-    const idx = newData.categories.findIndex(c => c.id === editingCategory.id);
+    const idx = newData.categories.findIndex(c => c.id === categoryToSave.id);
     
     if (idx >= 0) {
-      newData.categories[idx] = editingCategory;
+      newData.categories[idx] = categoryToSave;
     } else {
-      newData.categories.push(editingCategory);
-      setActiveCategoryId(editingCategory.id);
+      newData.categories.push(categoryToSave);
+      setActiveCategoryId(categoryToSave.id);
     }
+    
     setData(newData);
     saveData(newData);
     setEditingCategory(null);

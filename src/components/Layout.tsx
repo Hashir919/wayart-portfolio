@@ -18,23 +18,23 @@ export default function Layout({ children }: LayoutProps) {
   });
 
   return (
-    <div className="relative min-h-screen bg-bg-deep selection:bg-primary/30 selection:text-white antialiased overflow-x-hidden pt-1.5">
-      {/* Scroll Progress Bar */}
+    <div className="relative min-h-screen bg-bg-deep selection:bg-primary/30 selection:text-white antialiased overflow-x-hidden pt-1.5 flex flex-col">
+      {/* Scroll Progress Bar - Static look on mobile to save performance */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 md:h-1.5 bg-gradient-to-r from-primary to-secondary z-[100] origin-left shadow-[0_0_15px_rgba(255,133,161,0.5)]"
+        className="fixed top-0 left-0 right-0 h-1 md:h-1.5 bg-gradient-to-r from-primary to-secondary z-[100] origin-left shadow-[0_0_15px_rgba(255,133,161,0.5)] mobile-hide-decor"
         style={{ scaleX }}
       />
 
       <ParticleBackground />
       <Navbar />
 
-      <main className="relative z-10 w-full overflow-hidden">
+      <main className="relative z-10 w-full overflow-hidden flex-grow">
         {children}
       </main>
 
-      <footer className="py-16 md:py-24 relative z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-bg-card/20 backdrop-blur-3xl -z-10" />
-        <div className="max-w-7xl mx-auto responsive-padding">
+      <footer className="py-12 md:py-24 relative z-10 overflow-hidden mt-auto">
+        <div className="absolute inset-0 bg-bg-card/40 md:bg-bg-card/20 glass-premium -z-10" />
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-10 md:gap-12 pb-12 border-b border-white/5">
             <div className="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
               <div className="flex items-center gap-3 text-2xl md:text-3xl font-black text-white tracking-tighter group cursor-pointer transition-transform hover:scale-105">

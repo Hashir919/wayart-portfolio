@@ -39,7 +39,7 @@ export default function Commissions() {
   return (
     <section id="commissions" className="responsive-section relative overflow-hidden bg-bg-deep/30">
       {/* Background Section Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-[140px] -z-10" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-[140px] -z-10 mobile-hide-decor" />
 
       <div className="max-w-7xl mx-auto responsive-padding">
         <motion.div
