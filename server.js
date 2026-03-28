@@ -4,20 +4,23 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Define __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+// Render sets PORT automatically. Default to 3001 locally.
 const port = process.env.PORT || 3001;
 
 // Admin password (change in .env if desired)
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
+// Middleware
 app.use(cors());
 // Need larger payload limit in case JSON gets big
 app.use(express.json({ limit: '50mb' }));
 
-// Middleware to check admin password
+// Helper to check admin password
 const requireAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || authHeader !== `Bearer ${ADMIN_PASSWORD}`) {
@@ -26,6 +29,7 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
+// Data path - keep it in the src directory as original
 const dataFile = path.join(__dirname, 'src/data/portfolio.json');
 
 // Ensure data directory exists
@@ -36,10 +40,10 @@ if (!fs.existsSync(dataDir)) {
 
 // Ensure the json file exists
 if (!fs.existsSync(dataFile)) {
-  fs.writeFileSync(dataFile, JSON.stringify({ categories: [] }, null, 2));
+  fs.writeFileSync(dataFile, JSON.stringify({ categories: [], about: {}, contact: {} }, null, 2));
 }
 
-// API Routes
+// --- API Routes ---
 
 // Verify password
 app.post('/api/verify', (req, res) => {
@@ -51,7 +55,7 @@ app.post('/api/verify', (req, res) => {
   }
 });
 
-// Get current portfolio JSON data (useful for admin panel to fetch the raw data directly if needed, though vite handles it via import for the main site)
+// Get current portfolio JSON data
 app.get('/api/portfolio', (req, res) => {
   try {
     const rawData = fs.readFileSync(dataFile, 'utf-8');
@@ -66,7 +70,7 @@ app.post('/api/portfolio', requireAuth, (req, res) => {
   try {
     const newData = req.body;
     // Basic validation
-    if (!newData || !Array.isArray(newData.categories)) {
+    if (!newData || !newData.categories) {
       return res.status(400).json({ error: 'Invalid data format' });
     }
     fs.writeFileSync(dataFile, JSON.stringify(newData, null, 2));
@@ -76,23 +80,28 @@ app.post('/api/portfolio', requireAuth, (req, res) => {
   }
 });
 
-// Serve frontend static files from the dist directory (Vite build output)
-const distPath = path.join(__dirname, 'dist');
-if (fs.existsSync(distPath)) {
-  app.use(express.static(distPath));
+// --- Frontend Serving (Production Only) ---
 
-  // Catch-all route to return index.html for all non-API routes (React Router fallback)
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
-} else {
-  console.warn("Warning: 'dist' folder not found. Frontend will not be served.");
-  // Still provide a fallback for root just in case
-  app.get('/', (req, res) => {
-    res.send("Backend API is running. Build the frontend to serve the UI.");
-  });
-}
+// Define path to build output
+const distPath = path.resolve(__dirname, 'dist');
 
-app.listen(port, () => {
-  console.log(`JSON CMS API attached! Server running on port ${port}`);
+// Serve static files from the 'dist' directory
+// This MUST come before the catch-all (*) route
+app.use(express.static(distPath));
+
+// Support for Single Page Application (SPA) routing
+// If a request doesn't match an API route or a static file, return index.html
+app.get('*', (req, res) => {
+  const indexPath = path.join(distPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send("Not Found. Frontend build (dist folder) is missing or incomplete.");
+  }
+});
+
+// Start Server
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is live on port ${port}`);
+  console.log(`Serving frontend from: ${distPath}`);
 });
