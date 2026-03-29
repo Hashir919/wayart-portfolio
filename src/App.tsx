@@ -1,14 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, Suspense } from "react";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import { Loader2 } from "lucide-react";
-
-// Code splitting for non-critical pages
-const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
-const PortfolioCategoryPage = lazy(() => import("./pages/PortfolioCategoryPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const AdminPage = lazy(() => import("./pages/AdminPage"));
 
 // Premium Loading Fallback
 function PageLoader() {
@@ -22,13 +16,21 @@ function PageLoader() {
   );
 }
 
-// Scroll to top on route change
-function ScrollToTop() {
-  const { pathname } = useLocation();
+// Global Scroll Handler
+function ScrollHandler() {
+  const { pathname, hash } = useLocation();
   
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (!hash) {
+      window.scrollTo(0, 0);
+    } else {
+      const id = hash.replace("#", "");
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [pathname, hash]);
 
   return null;
 }
@@ -36,15 +38,13 @@ function ScrollToTop() {
 export default function App() {
   return (
     <Router>
-      <ScrollToTop />
+      <ScrollHandler />
       <Layout>
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/portfolio" element={<PortfolioPage />} />
-            <Route path="/portfolio/:categoryId" element={<PortfolioCategoryPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            {/* Catch-all for sub-paths in static mode */}
+            <Route path="*" element={<Home />} />
           </Routes>
         </Suspense>
       </Layout>

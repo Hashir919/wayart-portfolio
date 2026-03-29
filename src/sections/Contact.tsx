@@ -1,172 +1,124 @@
 import { motion } from "motion/react";
-import { Mail, MessageSquare, Send, Instagram, Twitter, ExternalLink, Sparkles, Loader2, Github } from "lucide-react";
-import React, { useState } from "react";
-import { usePortfolioData } from "../hooks/usePortfolioData";
+import { Mail, Sparkles, MessageCircle, ClipboardCheck, PenTool, Palette, Wand2 } from "lucide-react";
+
+const CONTACT_INFO = {
+  email: "drivenkore@gmail.com",
+  discord: "kore_69",
+  discordUrl: "https://discord.com" // Update with real link if available
+};
+
+const PROCESS_STEPS = [
+  {
+    icon: <ClipboardCheck size={20} />,
+    title: "The Inquiry",
+    desc: "Send your ideas & references via Email or Discord."
+  },
+  {
+    icon: <PenTool size={20} />,
+    title: "Rough Sketch",
+    desc: "I'll create a draft for your composition approval."
+  },
+  {
+    icon: <Palette size={20} />,
+    title: "Refining",
+    desc: "Applying line art and flat colors to the piece."
+  },
+  {
+    icon: <Wand2 size={20} />,
+    title: "Final Magic",
+    desc: "Rendering, lighting, and final polish delivered."
+  }
+];
 
 export default function Contact() {
-  const { data: portfolioData, loading } = usePortfolioData();
-  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  if (loading) {
-    return (
-      <div className="py-20 flex justify-center items-center h-[300px]">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  const contact = portfolioData?.contact || {
-    email: "warry@wayart.com",
-    discord: "Warry#0001",
-    socials: { twitter: "#", instagram: "#", github: "#" }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert("Message sent! (Demo mode)");
-      setFormState({ name: "", email: "", message: "" });
-    }, 1500);
-  };
-
-  const socialLinks = [
-    { icon: <Instagram size={20} />, label: "Instagram", url: contact.socials.instagram, color: "hover:border-pink-500/30", iconColor: "group-hover:text-pink-500" },
-    { icon: <Twitter size={20} />, label: "Twitter", url: contact.socials.twitter, color: "hover:border-blue-400/30", iconColor: "group-hover:text-blue-400" },
-    { icon: <Github size={20} />, label: "GitHub", url: contact.socials.github, color: "hover:border-gray-500/30", iconColor: "group-hover:text-gray-400" },
-  ];
-
   return (
-    <section id="contact" className="relative responsive-section overflow-hidden bg-bg-deep">
+    <section id="contact" className="relative responsive-section overflow-hidden bg-bg-deep py-20">
       {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full -z-10 mobile-hide-decor">
-        <div className="absolute top-[20%] left-[-10%] w-80 h-80 bg-primary/5 rounded-full blur-[140px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-secondary/5 rounded-full blur-[120px]" />
+      <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-30 pointer-events-none">
+        <div className="absolute top-[20%] left-[-10%] w-64 h-64 bg-primary/10 rounded-full blur-[100px] mobile-hide-decor" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-56 h-56 bg-secondary/5 rounded-full blur-[80px] mobile-hide-decor" />
       </div>
 
-      <div className="max-w-7xl mx-auto responsive-padding">
-        <div className="grid lg:grid-cols-2 gap-12 md:gap-20">
+      <div className="max-w-7xl mx-auto responsive-padding px-6">
+        <div className="grid lg:grid-cols-2 gap-12 md:gap-20 items-center">
           {/* Left Side: Info */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-premium border border-primary/20 mb-6 text-primary">
               <Sparkles size={14} />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Open for Commissions</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Open now</span>
             </div>
             <h2 className="text-fluid-4xl md:text-7xl font-black mb-8 md:mb-10 tracking-tighter leading-[0.95]">
-              Let's Bring Your <span className="text-gradient">Vision</span> to Life <span className="text-primary">.</span>
+              Let's Start a <span className="text-gradient">Project</span> together <span className="text-primary">.</span>
             </h2>
             <p className="text-base md:text-xl text-white/50 mb-10 md:mb-12 leading-relaxed font-medium">
-              Ready to start a new artwork or commission? Drop me a message and let's discuss your ideas!
+              Ready to bring your characters to life? I'm currently accepting new commissions. Let's talk!
             </p>
 
-            <div className="space-y-4 md:space-y-6">
+            <div className="flex flex-col gap-4">
               <a 
-                href={`mailto:${contact.email}`}
-                className="flex items-center gap-5 p-5 md:p-6 rounded-[1.5rem] bg-white/5 border border-white/5 hover:border-primary/30 transition-all group"
+                href={`mailto:${CONTACT_INFO.email}`}
+                className="flex items-center gap-5 p-5 md:p-6 rounded-[1.5rem] bg-white/5 border border-white/5 hover:border-primary/30 transition-all group w-full"
               >
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary transition-transform group-active:scale-95">
                   <Mail size={24} />
                 </div>
                 <div>
                   <p className="text-[10px] uppercase tracking-widest font-black text-white/30 mb-1">Email Me</p>
-                  <p className="text-sm md:text-lg font-black">{contact.email}</p>
+                  <p className="text-sm md:text-base font-black tracking-tight">{CONTACT_INFO.email}</p>
                 </div>
               </a>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {socialLinks.map((social, i) => (
-                   <a 
-                    key={i}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center gap-4 p-5 rounded-[1.5rem] bg-white/5 border border-white/5 ${social.color} transition-all group`}
-                  >
-                    <div className={`${social.iconColor} transition-colors`}>{social.icon}</div>
-                    <span className="text-[10px] md:text-xs font-black uppercase tracking-widest">{social.label}</span>
-                    <ExternalLink size={14} className="ml-auto text-white/10" />
-                  </a>
-                ))}
-              </div>
+              <a 
+                href={CONTACT_INFO.discordUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-5 p-5 md:p-6 rounded-[1.5rem] bg-white/5 border border-white/5 hover:border-blue-400/30 transition-all group w-full"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-blue-400/10 flex items-center justify-center text-blue-400 transition-transform group-active:scale-95">
+                  <MessageCircle size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest font-black text-white/30 mb-1" id="discord-label">Discord</p>
+                  <p className="text-sm md:text-base font-black tracking-tight">{CONTACT_INFO.discord}</p>
+                </div>
+              </a>
             </div>
           </motion.div>
 
-          {/* Right Side: Form */}
+          {/* Right Side: Creative Process Section */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="p-8 md:p-12 rounded-[2.5rem] glass-premium border border-white/10 shadow-2xl relative"
           >
-            <form 
-              onSubmit={handleSubmit}
-              className="p-8 md:p-10 rounded-[2.5rem] glass-premium border border-white/10 shadow-2xl relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -z-10" />
+            <h3 className="text-xl md:text-3xl font-black mb-8 tracking-tighter">My Creative <span className="text-primary">Process</span></h3>
+            
+            <div className="space-y-8 relative">
+              {/* Connecting Line */}
+              <div className="absolute left-[23px] top-4 bottom-4 w-[2px] bg-white/5 mobile-hide-decor" />
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label className="block text-[10px] uppercase tracking-widest font-black text-white/30 mb-3 ml-2">Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={formState.name}
-                    onChange={(e) => setFormState({...formState, name: e.target.value})}
-                    placeholder="Warry Kane"
-                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary/50 focus:bg-white/10 outline-none transition-all text-sm font-medium"
-                  />
+              {PROCESS_STEPS.map((step, i) => (
+                <div key={i} className="flex gap-6 relative group">
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 z-10 shrink-0">
+                    {step.icon}
+                  </div>
+                  <div>
+                    <h4 className="text-sm md:text-base font-black mb-1 uppercase tracking-wider">{step.title}</h4>
+                    <p className="text-xs md:text-sm text-white/40 leading-relaxed font-medium">{step.desc}</p>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-[10px] uppercase tracking-widest font-black text-white/30 mb-3 ml-2">Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={formState.email}
-                    onChange={(e) => setFormState({...formState, email: e.target.value})}
-                    placeholder="hello@example.com"
-                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary/50 focus:bg-white/10 outline-none transition-all text-sm font-medium"
-                  />
-                </div>
-              </div>
+              ))}
+            </div>
 
-              <div className="mb-8">
-                <label className="block text-[10px] uppercase tracking-widest font-black text-white/30 mb-3 ml-2">Tell me about your vision</label>
-                <textarea
-                  rows={4}
-                  required
-                  value={formState.message}
-                  onChange={(e) => setFormState({...formState, message: e.target.value})}
-                  placeholder="I'd love to commission a character illustration..."
-                  className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary/50 focus:bg-white/10 outline-none transition-all text-sm font-medium resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full py-5 bg-primary text-bg-deep font-black rounded-2xl flex items-center justify-center gap-3 shadow-xl shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed group uppercase tracking-[0.2em] text-xs font-sans"
-              >
-                {isSubmitting ? (
-                  <Loader2 className="animate-spin" size={20} />
-                ) : (
-                  <>
-                    Transmit Vision <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                  </>
-                )}
-              </button>
-            </form>
-
-            <div className="mt-8 flex items-center justify-center gap-3 text-white/20">
-              <MessageSquare size={14} />
-              <p className="text-[10px] uppercase tracking-widest font-black">Average response: 24-48h</p>
+            <div className="mt-12 p-5 bg-primary/5 border border-primary/20 rounded-2xl text-center">
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">Estimated Delivery: 2-3 Weeks</p>
             </div>
           </motion.div>
         </div>

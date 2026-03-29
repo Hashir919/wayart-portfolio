@@ -19,17 +19,6 @@ export default function OptimizedImage({
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(false);
 
-  // Helper to inject Cloudinary optimization params
-  const getOptimizedUrl = (url: string) => {
-    if (!url) return "";
-    if (url.includes("cloudinary.com") && !url.includes("f_auto,q_auto")) {
-      return url.replace("/upload/", "/upload/f_auto,q_auto,w_1000/"); // Default max width for safety
-    }
-    return url;
-  };
-
-  const optimizedSrc = getOptimizedUrl(src);
-
   return (
     <div className={`relative overflow-hidden ${aspectRatio} ${className}`}>
       {/* Skeleton / Shimmer Loader */}
@@ -44,7 +33,7 @@ export default function OptimizedImage({
       </AnimatePresence>
 
       <img
-        src={optimizedSrc}
+        src={src}
         alt={alt}
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "auto"}

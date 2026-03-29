@@ -36,6 +36,8 @@
     font-family: var(--font-sans);
     scroll-behavior: smooth;
     font-size: var(--text-fluid-base);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1 { font-size: var(--text-fluid-5xl); }
@@ -51,43 +53,30 @@
 }
 
 .glass {
-  @apply bg-bg-card backdrop-blur-xl border border-glass-border;
+  @apply bg-bg-card border border-glass-border;
+  backdrop-filter: blur(12px);
 }
 
 .glass-premium {
-  @apply backdrop-blur-3xl border border-white/10 shadow-[0_8px_64px_-12px_rgba(0,0,0,0.6)];
-  background: radial-gradient(circle at top left, rgba(255, 133, 161, 0.12), transparent 40%), var(--color-glass);
+  @apply border border-white/10 shadow-lg;
+  backdrop-filter: blur(20px);
+  background: radial-gradient(circle at top left, rgba(255, 133, 161, 0.08), transparent 40%), var(--color-glass);
 }
 
 .navbar-glass {
-  @apply backdrop-blur-3xl border border-primary/20 shadow-[0_15px_60px_-15px_rgba(255,133,161,0.2)];
-  background: linear-gradient(to right, rgba(255, 133, 161, 0.08), rgba(255, 179, 142, 0.04), rgba(255, 133, 161, 0.08));
+  @apply border border-primary/10 shadow-md;
+  backdrop-filter: blur(20px);
+  background: linear-gradient(to right, rgba(255, 133, 161, 0.05), rgba(255, 179, 142, 0.02), rgba(255, 133, 161, 0.05));
 }
 
 .glow-text {
-  text-shadow: 0 0 20px var(--color-primary-glow);
-}
-
-.glow-hover {
-  @apply transition-all duration-500 ease-soft;
-}
-
-.glow-hover:hover {
-  box-shadow: 0 0 30px var(--color-primary-glow);
-  @apply border-primary/30;
+  text-shadow: 0 0 15px var(--color-primary-glow);
 }
 
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(2deg); }
-}
-
-.animate-float-premium {
-  animation: float 6s ease-in-out infinite;
+  /* GPU acceleration for text gradient */
+  transform: translateZ(0); 
 }
 
 @keyframes shimmer {
@@ -98,6 +87,8 @@
 .shimmer {
   position: relative;
   overflow: hidden;
+  /* Use GPU for shimmer */
+  transform: translateZ(0);
 }
 
 .shimmer::after {
@@ -110,22 +101,10 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05),
     transparent
   );
-  animation: shimmer 2s infinite;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-bg-deep;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
+  animation: shimmer 3s infinite linear;
 }
 
 /* Optimization and Responsiveness Utilities */
@@ -141,20 +120,32 @@
   }
 }
 
-/* Pruning for Low-End / Mobile performance */
+/* Pruning for Low-End / Mobile performance (iPhone 8 optimization) */
 @media (max-width: 768px) {
-  .glass-premium {
-    @apply backdrop-blur-lg; /* Lower blur radius for cheaper GPU cost */
-    background: var(--color-glass);
+  .glass, .glass-premium, .navbar-glass {
+    backdrop-filter: blur(8px) !important; /* Significantly lower for older GPUs */
+    -webkit-backdrop-filter: blur(8px) !important;
   }
   
+  .glow-text {
+    text-shadow: none !important; /* Text shadows are expensive on mobile */
+  }
+
+  .glow-hover:hover {
+    box-shadow: none !important;
+  }
+
   .mobile-hide-decor {
     display: none !important;
   }
 
-  /* Disable heavy animations on mobile */
-  .animate-float-premium, .shimmer::after {
+  .shimmer::after {
     animation: none !important;
+  }
+  
+  /* Simplify transitions on mobile */
+  * {
+    transition-duration: 200ms !important;
   }
 }
 
@@ -163,12 +154,12 @@
 }
 
 .responsive-section {
-  @apply py-14 sm:py-24 md:py-32 lg:py-40;
+  @apply py-12 sm:py-20 md:py-28 lg:py-32;
 }
 
 img {
   max-width: 100%;
   height: auto;
   display: block;
-  content-visibility: auto; /* Browser optimization for off-screen images */
+  content-visibility: auto;
 }
