@@ -6,7 +6,7 @@ import OptimizedImage from "../components/OptimizedImage";
 import characterImg from "../assets/character.png";
 import coverartImg from "../assets/coverart.png";
 import vtuberImg from "../assets/vtuber.png";
-import heroImg from "../assets/hero-character.png";
+import emotesCoverImg from "../assets/emotes-cover.png";
 
 const CATEGORIES = [
   {
@@ -34,7 +34,7 @@ const CATEGORIES = [
     id: 4,
     name: "Emotes",
     desc: "Adorable and expressive chibi emotes for Twitch, Discord, and more.",
-    image: heroImg,
+    image: emotesCoverImg,
     link: "https://www.behance.net/gallery/246642643/Emotes"
   }
 ];
