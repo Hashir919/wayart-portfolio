@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { Mail, Sparkles, MessageCircle, ClipboardCheck, PenTool, Palette, Wand2 } from "lucide-react";
 
 const CONTACT_INFO = {
-  email: "drivenkore@gmail.com",
+  email: "drivenkore69@gmail.com",
   discord: "kore_69",
   discordUrl: "https://discord.com" // Update with real link if available
 };
@@ -60,7 +60,7 @@ export default function Contact() {
             </p>
 
             <div className="flex flex-col gap-4">
-              <a 
+              <a
                 href={`mailto:${CONTACT_INFO.email}`}
                 className="flex items-center gap-5 p-5 md:p-6 rounded-[1.5rem] bg-white/5 border border-white/5 hover:border-primary/30 transition-all group w-full"
               >
@@ -73,7 +73,7 @@ export default function Contact() {
                 </div>
               </a>
 
-              <a 
+              <a
                 href={CONTACT_INFO.discordUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -99,11 +99,11 @@ export default function Contact() {
             className="p-8 md:p-12 rounded-[2.5rem] glass-premium border border-white/10 shadow-2xl relative"
           >
             <h3 className="text-xl md:text-3xl font-black mb-8 tracking-tighter">My Creative <span className="text-primary">Process</span></h3>
-            
+
             <div className="space-y-8 relative">
               {/* Connecting Line */}
               <div className="absolute left-[23px] top-4 bottom-4 w-[2px] bg-white/5 mobile-hide-decor" />
-              
+
               {PROCESS_STEPS.map((step, i) => (
                 <div key={i} className="flex gap-6 relative group">
                   <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 z-10 shrink-0">
