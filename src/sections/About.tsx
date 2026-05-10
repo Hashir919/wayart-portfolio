@@ -8,14 +8,14 @@ import aboutHeroImage from "../assets/character.png";
 const ABOUT_DATA = {
   title: "The Artist Behind the Glass",
   quote: "Bringing warmth and magic to every character I touch.",
-  description: "Welcome! I'm Warry Kane, a digital illustrator and concept artist dedicated to creating characters that feel alive.",
+  description: "Welcome! I'm Warry Kane AKA ( Anna Libert), a digital illustrator and concept artist dedicated to creating characters that feel alive.",
   points: ["3+ Years of Digital Painting", "Anime & Character Specialist", "Global Commission Experience"],
   stats: [{ value: "3+ Years", label: "Experience" }, { value: "100+", label: "Projects" }]
 };
 
 export default function About() {
   const shouldReduceMotion = useReducedMotion();
-  
+
   const skills = [
     { icon: <Palette size={20} />, title: "Character Design", desc: "Crafting personality through visuals." },
     { icon: <Zap size={20} />, title: "Digital Painting", desc: "Expert use of light and shadow." },
@@ -71,15 +71,15 @@ export default function About() {
                 <Sparkles size={14} />
                 <span className="text-[10px] font-black uppercase tracking-[0.2em]">The Storyteller</span>
               </div>
-              
+
               <h2 className="text-fluid-4xl md:text-7xl font-black mb-6 md:mb-10 tracking-tighter leading-[0.95]">
                 {ABOUT_DATA.title} <span className="text-primary">.</span>
               </h2>
-              
+
               <p className="text-primary/60 font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-8 block">
                 "{ABOUT_DATA.quote}"
               </p>
-              
+
               <p className="text-base md:text-xl text-white/50 mb-10 md:mb-12 leading-relaxed font-medium">
                 {ABOUT_DATA.description}
               </p>
